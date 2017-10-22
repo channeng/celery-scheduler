@@ -19,7 +19,7 @@ Deployment with Docker is recommended for consistency of application environment
 1. Clone the repository
 ```bash
 cd ~
-git clone git@github.com:channeng/celery-scheduler.git
+git clone https://github.com/channeng/celery-scheduler.git
 cd celery-scheduler
 ```
 
@@ -32,11 +32,11 @@ cd celery-scheduler
 		```
 2. Build docker image
 	```bash
-	sudo docker build -t celery-scheduler .
+	docker build -t celery-scheduler .
 	```
 3. Run supervisord
 	```bash
-	sudo docker run -p 3020:80 -d celery-scheduler /usr/bin/supervisord --nodaemon
+	docker run -p 3020:80 -d celery-scheduler /usr/bin/supervisord --nodaemon
 	```
 
 Note: You may also choose to run this setup without Docker however no script is provided. Setup instructions can be interpreted from the given Dockerfile.
@@ -44,7 +44,7 @@ Note: You may also choose to run this setup without Docker however no script is 
 ## Checking successful deployment
 - Enter bash terminal of running Docker container
 ```bash
-sudo docker exec -i -t $(sudo docker ps -f ancestor=celery-scheduler --format "{{.ID}}") /bin/bash
+docker exec -i -t $(docker ps -f ancestor=celery-scheduler --format "{{.ID}}") /bin/bash
 ```
 - Retrieve logs and run test
 ```bash
