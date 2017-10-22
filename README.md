@@ -63,14 +63,22 @@ Note: You may also choose to run this setup without Docker however no script is 
 	root         9  0.1  8.4  91652 41900 ?        S    Oct21   0:42 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A
 	root        20  0.0  9.3  99540 46820 ?        S    Oct21   0:00 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A
 	```
-- Retrieve logs and run test
+- Retrieving logs
 	```bash
 	tail /var/log/redis/redis.log
 	tail /var/log/celery/beat.log
 	tail /var/log/celery/worker.log
 	tail /var/log/supervisor/supervisord.log
-	source /home/ubuntu/.virtualenvs/celery_env/bin/activate
-	python manage.py test
+	```
+- You should also see the task print_hello running every minute in your worker.log
+	```bash
+	tail -f /var/log/celery/worker.log
+	```
+	Output:
+	```bash
+	[2017-10-22 03:18:00,050: INFO/MainProcess] Received task: app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40]
+	[2017-10-22 03:18:00,051: INFO/ForkPoolWorker-1] app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40]: Hello
+	[2017-10-22 03:18:00,052: INFO/ForkPoolWorker-1] Task app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40] succeeded in 0.000455291003163s: None
 	```
 
 - If successfully deployed, supervisor logs should display:
@@ -80,28 +88,28 @@ Note: You may also choose to run this setup without Docker however no script is 
 	INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
 	```
 
-### Termination
-
-```bash
-supervisorctl stop all
-```
-
 ## Adding tasks to Celery
 
-- Task scripts should be written and stored in app/tasks
-- Update `celeryconfig.py` for new tasks and trigger times
+- Task scripts should be written and stored in app/tasks.
+- Update `celeryconfig.py` for new tasks and trigger times.
+- Remember to rebuild the docker image after updating for new tasks.
 
 ## Running adhoc tasks
 
 - Update `manage.py` for a manager command for the task to run on trigger
 - Run: ```python manage.py <manager_command>```
+- Eg.
+	```bash
+	source /home/ubuntu/.virtualenvs/celery_env/bin/activate
+	python manage.py test
+	```
 
-## Update to apps in Docker -- Rebuild docker image
+## Terminating Supervisor within container
+
 ```bash
-docker build -t docker_app </path/to/project_dir>
+supervisorctl stop all
 ```
 
 ## Contributing
 Feel free to submit Pull Requests.
 For any other enquiries, you may contact me at channeng@gmail.com.
-
