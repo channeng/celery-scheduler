@@ -20,7 +20,7 @@ The deployment of the application is handled through [Docker](https://www.docker
 
 ## Running this setup
 
-This setup is built for deployment with Docker.
+This setup is built for deployment with Docker. You may also choose to run this setup without Docker however no script is provided. Setup instructions can be interpreted from the given Dockerfile.
 
 Deployment with Docker is recommended for consistency of application environment.
 
@@ -38,19 +38,21 @@ cd celery-scheduler
 		```bash
 		sudo bash scripts/startup/ubuntu_docker_setup.sh
 		```
-2. Build docker image
+
+*Note*: You may need to run the following docker commands with `sudo` prefix if docker was set up to run with root.
+
+3. Build docker image
 	```bash
 	docker build -t celery-scheduler .
 	```
-3. (Optional) Stop any containers running on existing docker image
+4. (Optional) Stop any containers running on existing docker image
 	```bash
 	docker stop $(docker ps -f ancestor=celery-scheduler --format "{{.ID}}")
 	```
-3. Run supervisord with docker container
+5. Run supervisord with docker container
 	```bash
 	docker run -p 3020:80 -d celery-scheduler /usr/bin/supervisord --nodaemon
 	```
-Note: You may also choose to run this setup without Docker however no script is provided. Setup instructions can be interpreted from the given Dockerfile.
 
 ## Checking successful deployment
 - Enter bash terminal of running Docker container
