@@ -1,0 +1,4 @@
+redis*/
+celerybeat-schedule
+**/*.pyc
+.DS_Store
