@@ -2,13 +2,21 @@
 
 A Docker implementation of Celery running on Flask, managed with supervisord.
 
-## Overview
+## Why do I need this?
+
+Celery Scheduler allows you to setup a powerful, distributed and fuss-free application task scheduler. Once you set it up on a server, it can reliably run scheduled tasks at regular defined intervals.
+
+All you need to do is to [define your task method](app/tasks/test.py), and the [task schedule](celeryconfig.py), and Celery Scheduler will handle the rest for you.
+
+## How does it work?
 
 This is a scheduler application powered by [Celery](http://docs.celeryproject.org/en/latest/index.html) running on a minimal python web framework, [Flask](http://flask.pocoo.org/).
 
 The application is process-managed by [Supervisord](http://supervisord.org/) which takes care of managing celery task workers, celerybeat and Redis as the message broker.
 
 The deployment of the application is handled through [Docker](https://www.docker.com/what-docker) which isolates the application environment. It allows the application to run the same, whether locally, in staging or when deployed within a server.
+
+# Getting Started
 
 ## Running this setup
 
@@ -88,7 +96,7 @@ Note: You may also choose to run this setup without Docker however no script is 
 	INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
 	```
 
-## Adding tasks to Celery
+# Adding tasks to Celery
 
 - Task scripts should be written and stored in app/tasks.
 - Update `celeryconfig.py` for new tasks and trigger times.
