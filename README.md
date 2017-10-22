@@ -12,13 +12,18 @@ The deployment of the application is handled through [Docker](https://www.docker
 
 ## Running this setup
 
-You may choose to run this setup with or without Docker.
+This setup is built for deployment with Docker.
 
 Deployment with Docker is recommended for consistency of application environment.
 
-[With Docker]
+1. Clone the repository
+```bash
+cd ~
+git clone git@github.com:channeng/celery-scheduler.git
+cd celery-scheduler
+```
 
-1. Install Docker
+2. Install Docker
 	- [Mac or Windows](https://docs.docker.com/engine/installation/)
 	- [Ubuntu server](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04)
 		- To install docker in Ubuntu, you may run the install script:
@@ -36,37 +41,35 @@ Deployment with Docker is recommended for consistency of application environment
 	sudo docker run -p 3020:80 -d celery-scheduler /usr/bin/supervisord --nodaemon
 	```
 
-[Without Docker]
-1. Clone the repository:
+Note: You may also choose to run this setup without Docker however no script is provided. Setup instructions can be interpreted from the given Dockerfile.
+
+## Checking successful deployment
+- Enter bash terminal of running Docker container
 ```bash
-git clone 
+sudo docker exec -i -t $(sudo docker ps -f ancestor=celery-scheduler --format "{{.ID}}") /bin/bash
 ```
-## Contributing
-Feel free to submit Pull Requests.
-For any other enquiries, you may contact me at channeng@gmail.com.
-
-
+- Retrieve logs and run test
+```bash
+tail /var/log/redis/redis.log
+tail /var/log/celery/beat.log
+tail /var/log/celery/worker.log
+tail /var/log/supervisor/supervisord.log
+source /home/ubuntu/.virtualenvs/celery_env/bin/activate
+python manage.py test
+```
 
 - If successfully deployed, supervisor logs should display:
 ```bash
-2017-10-13 01:10:24,838 INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-2017-10-13 01:10:24,838 INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-2017-10-13 01:10:24,838 INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
 ```
-
-### Debugging
-
-- Supervisord logs are stored at `/var/log/supervisord/`
-- Celery & Celerybeat logs are stored at `/var/log/celery/`
-- Redis logs are stored at `/var/log/redis/`
 
 ### Termination
 
 ```bash
 supervisorctl stop all
 ```
-
-# Celery
 
 ## Adding tasks to Celery
 
@@ -82,3 +85,8 @@ supervisorctl stop all
 ```bash
 docker build -t docker_app </path/to/project_dir>
 ```
+
+## Contributing
+Feel free to submit Pull Requests.
+For any other enquiries, you may contact me at channeng@gmail.com.
+
