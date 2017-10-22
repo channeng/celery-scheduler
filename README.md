@@ -34,43 +34,51 @@ cd celery-scheduler
 	```bash
 	docker build -t celery-scheduler .
 	```
-3. Run supervisord
+3. (Optional) Stop any containers running on existing docker image
+	```bash
+	docker stop $(docker ps -f ancestor=celery-scheduler --format "{{.ID}}")
+	```
+3. Run supervisord with docker container
 	```bash
 	docker run -p 3020:80 -d celery-scheduler /usr/bin/supervisord --nodaemon
 	```
-
 Note: You may also choose to run this setup without Docker however no script is provided. Setup instructions can be interpreted from the given Dockerfile.
 
 ## Checking successful deployment
 - Enter bash terminal of running Docker container
-```bash
-docker exec -i -t $(docker ps -f ancestor=celery-scheduler --format "{{.ID}}") /bin/bash
-```
-- Check all required processes are running: `ps aux`
-You shoud see something like the following:
-```
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  2.5  56492 12728 ?        Ss   Oct21   0:05 /usr/bin/python /usr/bin/supervisord --nodaemon
-root         7  0.0  0.5  31468  2616 ?        Sl   Oct21   0:30 /home/ubuntu/caramel/redis-3.2.1/src/redis-server *:6379
-root         8  0.0  8.3  98060 41404 ?        S    Oct21   0:00 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery beat -A ap
-root         9  0.1  8.4  91652 41900 ?        S    Oct21   0:42 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A
-root        20  0.0  9.3  99540 46820 ?        S    Oct21   0:00 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A```
+	```bash
+	docker exec -i -t $(docker ps -f ancestor=celery-scheduler --format "{{.ID}}") /bin/bash
+	```
+- Check all required processes are running: 
+	```bash
+	ps aux
+	```
+
+	You shoud see something like the following:
+	```
+	USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+	root         1  0.0  2.5  56492 12728 ?        Ss   Oct21   0:05 /usr/bin/python /usr/bin/supervisord --nodaemon
+	root         7  0.0  0.5  31468  2616 ?        Sl   Oct21   0:30 /home/ubuntu/caramel/redis-3.2.1/src/redis-server *:6379
+	root         8  0.0  8.3  98060 41404 ?        S    Oct21   0:00 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery beat -A ap
+	root         9  0.1  8.4  91652 41900 ?        S    Oct21   0:42 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A
+	root        20  0.0  9.3  99540 46820 ?        S    Oct21   0:00 /home/ubuntu/.virtualenvs/celery_env/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env/bin/celery worker -A
+	```
 - Retrieve logs and run test
-```bash
-tail /var/log/redis/redis.log
-tail /var/log/celery/beat.log
-tail /var/log/celery/worker.log
-tail /var/log/supervisor/supervisord.log
-source /home/ubuntu/.virtualenvs/celery_env/bin/activate
-python manage.py test
-```
+	```bash
+	tail /var/log/redis/redis.log
+	tail /var/log/celery/beat.log
+	tail /var/log/celery/worker.log
+	tail /var/log/supervisor/supervisord.log
+	source /home/ubuntu/.virtualenvs/celery_env/bin/activate
+	python manage.py test
+	```
 
 - If successfully deployed, supervisor logs should display:
-```bash
-INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-```
+	```bash
+	INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	```
 
 ### Termination
 
