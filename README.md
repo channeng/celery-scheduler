@@ -32,8 +32,6 @@ cd celery-scheduler
 		```
 2. Build docker image
 	```bash
-	mkdir 
-	git archive --remote=git@github.com:channeng/celery-scheduler.git HEAD Dockerfile
 	sudo docker build -t celery-scheduler .
 	```
 3. Run supervisord
