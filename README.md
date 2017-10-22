@@ -8,6 +8,12 @@ Celery Scheduler allows you to setup a powerful, distributed and fuss-free appli
 
 All you need to do is to [define your task method](app/tasks/test.py), and the [task schedule](celeryconfig.py), and Celery Scheduler will handle the rest for you.
 
+Some interesting uses for your own task scheduler include:
+- Home automation (IOT projects)
+- Data Workflow management for Business Intelligence (BI)
+- Triggering Email campaigns
+- Any other routine, periodic tasks
+
 ## How does it work?
 
 This is a scheduler application powered by [Celery](http://docs.celeryproject.org/en/latest/index.html) running on a minimal python web framework, [Flask](http://flask.pocoo.org/).
