@@ -2,6 +2,8 @@
 
 A Docker implementation of Celery running on Flask, managed with supervisord.
 
+A walkthrough of this setup is documented at this [Medium article](https://medium.com/@channeng/setting-up-a-task-scheduler-application-with-celery-flask-part-1-8652265050dc).
+
 ## Why do I need this?
 
 Celery Scheduler allows you to setup a powerful, distributed and fuss-free application task scheduler. Once you set it up on a server, it can reliably run scheduled tasks at regular defined intervals.
