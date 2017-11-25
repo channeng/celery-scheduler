@@ -88,6 +88,12 @@ cd celery-scheduler
 	tail /var/log/celery/worker.log
 	tail /var/log/supervisor/supervisord.log
 	```
+- If successfully deployed, supervisor logs should display:
+	```bash
+	INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+	```
 - You should also see the task print_hello running every minute in your worker.log
 	```bash
 	tail -f /var/log/celery/worker.log
@@ -97,13 +103,6 @@ cd celery-scheduler
 	[2017-10-22 03:18:00,050: INFO/MainProcess] Received task: app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40]
 	[2017-10-22 03:18:00,051: INFO/ForkPoolWorker-1] app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40]: Hello
 	[2017-10-22 03:18:00,052: INFO/ForkPoolWorker-1] Task app.tasks.test.print_hello[aa1b7700-1665-4751-ada2-35aba5670d40] succeeded in 0.000455291003163s: None
-	```
-
-- If successfully deployed, supervisor logs should display:
-	```bash
-	INFO success: redis entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-	INFO success: celerybeat entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
-	INFO success: celery entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
 	```
 
 # Adding tasks to Celery
