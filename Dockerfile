@@ -25,6 +25,7 @@ RUN \
   virtualenv -p /usr/bin/python2.7 /home/ubuntu/.virtualenvs/celery_env
 
 # Setup for ssh onto github, clone and define working directory
+ADD https://api.github.com/repos/channeng/celery-scheduler/git/refs/heads/master repo_version.json
 RUN git clone https://github.com/channeng/celery-scheduler.git /home/ubuntu/celery-scheduler
 
 WORKDIR /home/ubuntu/celery-scheduler
